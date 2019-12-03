@@ -1,16 +1,18 @@
-const fs = require('fs');
-const csv = require('csvtojson');
+import {appendFile} from 'fs';
+import {promisify} from 'util';
+import csv from 'csvtojson';
+
 const file = './data/cvs_input.csv';
 
+const append = promisify(appendFile);
 const errorHandler = (err) => {
   console.log(err);
 };
 
 const writeLine = (data) => {
   const formattedString = `${JSON.stringify(data)}\n`;
-  fs.appendFile('./data/task2_output.txt', formattedString, 'utf8', (err) => {
-    if (err) errorHandler(err);
-  });
+  append('./data/task2_output.txt', formattedString)
+    .catch(errorHandler)
 };
 
 csv()
