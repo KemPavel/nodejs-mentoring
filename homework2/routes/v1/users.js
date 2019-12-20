@@ -13,8 +13,11 @@ const users = [];
 router.get('/', (req, res) => {
   const { login, limit = 5 } = req.query;
   if (login) {
-    const suggestedUsers = users.filter((user) => user.login.toLowerCase().includes(login.toLowerCase()));
-    return res.json(suggestedUsers.slice(0, limit).sort());
+    const suggestedUsers = users
+      .filter((user) => user.login.toLowerCase().includes(login.toLowerCase()))
+      .slice(0, limit)
+      .sort();
+    return res.json(suggestedUsers);
   }
 
   res.json(users);
