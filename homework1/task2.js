@@ -1,4 +1,4 @@
-import {createReadStream, createWriteStream} from 'fs';
+import { createReadStream, createWriteStream } from 'fs';
 import csv from 'csvtojson';
 
 const inputPath = './data/cvs_input.csv';
@@ -11,3 +11,4 @@ readStream
   .pipe(csv())
   .pipe(writeStream)
   .on('error', console.log);
+

@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "task1": "nodemon --exec babel-node task1.js",
-    "task2": "nodemon --exec babel-node task2.js"
+    "lint": "eslint .",
+    "lint_fix": "eslint . --fix",
+    "task1_1": "nodemon --exec babel-node ./homework1/task1.js",
+    "task1_2": "nodemon --exec babel-node ./homework1/task2.js",
+    "task2": "nodemon --exec babel-node ./homework2/index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +17,15 @@
     "@babel/core": "^7.7.4",
     "@babel/node": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.7.2",
     "nodemon": "^2.0.1"
   },
   "dependencies": {
-    "csvtojson": "^2.0.10"
+    "bcryptjs": "^2.4.3",
+    "csvtojson": "^2.0.10",
+    "express": "^4.17.1",
+    "express-validator": "^6.3.0",
+    "uuid": "^3.3.3"
   }
 }
