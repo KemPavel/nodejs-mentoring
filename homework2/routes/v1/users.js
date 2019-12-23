@@ -2,25 +2,20 @@ import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import uuid from 'uuid';
 import { validationResult } from 'express-validator';
+import dataStorage from '../../data/index';
 import validators from '../../utils/validators';
 
 const router = Router();
-const users = [];
 
 // @route  GET v1/users
 // @desc   Get a list of all users
 // @access Public
 router.get('/', (req, res) => {
-  const { login, limit = 5 } = req.query;
+  const { login, limit } = req.query;
   if (login) {
-    const suggestedUsers = users
-      .filter((user) => user.login.toLowerCase().includes(login.toLowerCase()))
-      .slice(0, limit)
-      .sort();
-    return res.json(suggestedUsers);
+    return res.json(dataStorage.getSuggestedUsers(login, limit));
   }
-
-  res.json(users);
+  res.json(dataStorage.getUsers());
 });
 
 // @route  POST v1/users
@@ -44,7 +39,7 @@ router.post('/', validators, async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   newUser.password = await bcrypt.hash(password, salt);
 
-  users.push(newUser);
+  dataStorage.addUser(newUser);
   res.json(newUser.id);
 });
 
@@ -57,8 +52,7 @@ router.put('/:userId', validators, (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const user = users.find((usr) => usr.id === req.params.userId);
-  const userIndex = users.findIndex((usr) => usr.id === req.params.userId);
+  const user = dataStorage.getUserById(req.params.userId);
 
   if (!user) {
     return res.status(404).json({ msg: 'User not found' });
@@ -69,16 +63,17 @@ router.put('/:userId', validators, (req, res) => {
     ...req.body
   };
 
-  users.splice(userIndex, 1, updatedUser);
+  const userIndex = dataStorage.getUserIndex(req.body.userId);
+  dataStorage.updateUser(userIndex, updatedUser);
 
-  res.json(users);
+  res.json(dataStorage.getUsers());
 });
 
 // @route  GET v1/users/:userId
 // @desc   Get a user by ID
 // @access Public
 router.get('/:userId', (req, res) => {
-  const user = users.find((usr) => usr.id === req.params.userId);
+  const user = dataStorage.getUserById(req.params.userId);
 
   if (!user) {
     return res.status(404).json({ msg: 'User not found' });
@@ -92,8 +87,7 @@ router.get('/:userId', (req, res) => {
 // @desc   Delete a user by ID
 // @access Private
 router.delete('/:userId', (req, res) => {
-  const user = users.find((usr) => usr.id === req.params.userId);
-  const userIndex = users.findIndex((usr) => usr.id === req.params.userId);
+  const user = dataStorage.getUserById(req.params.userId);
 
   if (!user) {
     return res.status(404).json({ msg: 'User not found' });
@@ -104,9 +98,10 @@ router.delete('/:userId', (req, res) => {
     isDeleted: true
   };
 
-  users.splice(userIndex, 1, updatedUser);
+  const userIndex = dataStorage.getUserIndex(req.body.userId);
+  dataStorage.updateUser(userIndex, updatedUser);
 
-  res.json(users);
+  res.json(dataStorage.getUsers());
 });
 
 
