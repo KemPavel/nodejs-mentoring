@@ -1,6 +1,7 @@
 import express from 'express';
 import users from './routes/v1/users';
 import notFoundPage from './routes/v1/notFoundPage';
+import models from './models';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -12,4 +13,7 @@ app.use(express.json());
 app.use('/v1/users', users);
 app.use(notFoundPage);
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+// Drop data base before start
+models.sequelize.sync({ force: true }).then(() => {
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+});
