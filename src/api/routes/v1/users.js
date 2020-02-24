@@ -12,7 +12,8 @@ const userServiceInstance = new UserService(User);
 // @desc   Get a list of all users
 // @access Public
 router.get('/', async (req, res) => {
-  const users = await userServiceInstance.findAllUsers(req.query);
+  const { query } = req;
+  const users = await userServiceInstance.findAllUsers(query);
   res.json(users);
 });
 
@@ -26,7 +27,8 @@ router.post('/', validators, async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const user = await userServiceInstance.createUser(req.body);
+  const { body } = req;
+  const user = await userServiceInstance.createUser(body);
   res.json(user);
 });
 
@@ -50,8 +52,9 @@ router.put('/:userId', validators, async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
-  const updatedUser = await userServiceInstance.updateUser(req.body, req.user.id);
+  const userId = req.user.id;
+  const { body } = req.body;
+  const updatedUser = await userServiceInstance.updateUser(body, userId);
   res.json(updatedUser);
 });
 
@@ -68,7 +71,8 @@ router.get('/:userId', async (req, res) => {
 // @desc   Delete a user by ID
 // @access Private
 router.delete('/:userId', async (req, res) => {
-  await userServiceInstance.updateUser({ isDeleted: true }, req.user.id);
+  const userId = req.user.id;
+  await userServiceInstance.updateUser({ isDeleted: true }, userId);
   res.status(204).end();
 });
 

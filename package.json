@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint .",
     "lint_fix": "eslint . --fix",
-    "start": "nodemon --exec babel-node ./src/app.js"
+    "start": "CLEANDB=true nodemon --exec babel-node ./src/app.js",
+    "seed": "CLEANDB=false babel-node ./src/seed.js && nodemon --exec babel-node ./src/app.js"
   },
   "keywords": [],
   "author": "",

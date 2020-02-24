@@ -13,7 +13,6 @@ app.use(express.json());
 app.use('/v1/users', users);
 app.use(notFoundPage);
 
-// Drop data base before start
-models.sequelize.sync({ force: true }).then(() => {
+models.sequelize.sync({ force: process.env.CLEANDB }).then(() => {
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 });
