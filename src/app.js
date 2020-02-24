@@ -1,6 +1,6 @@
 import express from 'express';
-import users from './routes/v1/users';
-import notFoundPage from './routes/v1/notFoundPage';
+import users from './api/routes/v1/users';
+import notFoundPage from './api/routes/v1/notFoundPage';
 import models from './models';
 
 const app = express();

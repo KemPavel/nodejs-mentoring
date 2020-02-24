@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     login: {
       type: DataTypes.STRING,
       allowNull: false
-      // QUESTION: do I need to add validators here as well as I did on routes?
     },
     password: {
       type: DataTypes.STRING,
@@ -12,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
     age: {
       type: DataTypes.INTEGER,
       allowNull: false
-      // QUESTION: do I need to add validators here as well as I did on routes?
     },
     isDeleted: {
       type: DataTypes.BOOLEAN,
@@ -23,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   // Add predefined users to DB
-  User.sync().then(() => {
+  User.sync({ force: true }).then(() => {
     User.create({
       login: 'john',
       age: 7,

@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint_fix": "eslint . --fix",
-    "start": "nodemon --exec babel-node ./server/index.js"
+    "start": "nodemon --exec babel-node ./src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "config": "^3.2.6",
     "csvtojson": "^2.0.10",
     "express": "^4.17.1",
     "express-validator": "^6.3.0",
