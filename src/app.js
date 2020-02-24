@@ -5,6 +5,7 @@ import models from './models';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const cleanDB = process.env.CLEANDB || false;
 
 // Middleware
 app.use(express.json());
@@ -13,6 +14,6 @@ app.use(express.json());
 app.use('/v1/users', users);
 app.use(notFoundPage);
 
-models.sequelize.sync({ force: process.env.CLEANDB }).then(() => {
+models.sequelize.sync({ force: cleanDB }).then(() => {
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 });
