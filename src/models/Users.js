@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('User', {
+  const Users = sequelize.define('Users', {
     login: {
       type: DataTypes.STRING,
       allowNull: false
@@ -17,4 +17,14 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     }
   });
+
+  Users.associate = (models) => {
+    Users.belongsToMany(models.Groups, {
+      through: 'UserGroups',
+      as: 'groups',
+      foreignKey: 'userId'
+    });
+  };
+
+  return Users;
 };

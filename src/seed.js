@@ -1,4 +1,4 @@
-import { User } from './models';
+import { Users, Groups } from './models';
 
 const predefinedUsers = [
   {
@@ -27,9 +27,23 @@ const predefinedUsers = [
   }
 ];
 
+const predefinedGroups = [
+  {
+    name: 'dev',
+    permissions: ['READ', 'CREATE', 'UPDATE']
+  },
+  {
+    name: 'test'
+  }
+];
+
 const seed = () => {
-  return User.sync({ force: true }).then(() => {
-    return User.bulkCreate(predefinedUsers);
+  return Users.sync({ force: true }).then(() => {
+    return Users.bulkCreate(predefinedUsers).then(() => {
+      return Groups.sync({ force: true }).then(() => {
+        return Groups.bulkCreate(predefinedGroups);
+      });
+    });
   });
 };
 

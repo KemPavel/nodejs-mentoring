@@ -1,17 +1,32 @@
 import { Router } from 'express';
-import { User } from '../../../models';
+import { Users, UserGroups, Groups } from '../../../models';
 import { validationResult } from 'express-validator';
-import UserService from '../../../services/UserService';
-import validators from '../../../services/validators';
+import { UserService, validators } from '../../../services';
 
 const router = Router();
-const userServiceInstance = new UserService(User);
+const userServiceInstance = new UserService(Users);
+
+const addUsersToGroup = async (groupId, userIds) => {
+  try {
+    const group = await Groups.findOne({ where: { id: groupId } });
+    for (const id of userIds) {
+      const gr = await UserGroups.create({
+        userId: id,
+        groupId: group.id
+      }, { returning: true });
+      console.log('GROUP: ', gr);
+    }
+  } catch (error) {
+    console.error('error: ', error);
+  }
+};
 
 
 // @route  GET v1/users
 // @desc   Get a list of all users
 // @access Public
 router.get('/', async (req, res) => {
+  await addUsersToGroup(2, [1, 2, 3]);
   const { query } = req;
   const users = await userServiceInstance.findAllUsers(query);
   res.json(users);
@@ -44,6 +59,14 @@ router.param('userId', async (req, res, next, userId) => {
 });
 
 
+// @route  GET v1/users/:userId
+// @desc   Get a user by ID
+// @access Public
+router.get('/:userId', (req, res) => {
+  res.json(req.user);
+});
+
+
 // @route  PUT v1/users/:userId
 // @desc   Update user info
 // @access Private
@@ -56,14 +79,6 @@ router.put('/:userId', validators, async (req, res) => {
   const { body } = req.body;
   const updatedUser = await userServiceInstance.updateUser(body, userId);
   res.json(updatedUser);
-});
-
-
-// @route  GET v1/users/:userId
-// @desc   Get a user by ID
-// @access Public
-router.get('/:userId', async (req, res) => {
-  res.json(req.user);
 });
 
 

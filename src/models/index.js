@@ -11,7 +11,9 @@ const sequelize = new Sequelize(db, {
 });
 
 const models = {
-  User: sequelize.import('./User')
+  Users: sequelize.import('./Users'),
+  Groups: sequelize.import('./Groups'),
+  UserGroups: sequelize.import('./UserGroups')
 };
 
 models.sequelize = sequelize;
