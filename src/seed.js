@@ -1,4 +1,4 @@
-import { Users, Groups } from './models';
+import { User, Group, UserGroups } from './models';
 
 const predefinedUsers = [
   {
@@ -38,10 +38,12 @@ const predefinedGroups = [
 ];
 
 const seed = () => {
-  return Users.sync({ force: true }).then(() => {
-    return Users.bulkCreate(predefinedUsers).then(() => {
-      return Groups.sync({ force: true }).then(() => {
-        return Groups.bulkCreate(predefinedGroups);
+  return User.sync({ force: true }).then(() => {
+    return User.bulkCreate(predefinedUsers).then(() => {
+      return Group.sync({ force: true }).then(() => {
+        return Group.bulkCreate(predefinedGroups).then(() => {
+          return UserGroups.sync({ force: true });
+        });
       });
     });
   });

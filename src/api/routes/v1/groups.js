@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { Groups } from '../../../models';
-import { GroupService } from '../../../services';
+import { Group, UserGroups } from '../../../models';
+import { GroupService, UserGroupsService } from '../../../services';
 
 const router = Router();
-const groupServiceInstance = new GroupService(Groups);
+const groupServiceInstance = new GroupService(Group);
+const userGroupsServiceInstance = new UserGroupsService(UserGroups, Group);
 
 // @route  GET v1/groups
 // @desc   Get a list of all groups
@@ -58,6 +59,7 @@ router.put('/:groupId', async (req, res) => {
 // @desc Delete group
 // @access Public
 router.delete('/:groupId', async (req, res) => {
+  await userGroupsServiceInstance.deleteGroupFromTable(req.group.id);
   await req.group.destroy();
   res.status(204).end();
 });

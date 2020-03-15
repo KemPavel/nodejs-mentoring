@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "lint_fix": "eslint . --fix",
     "start": "CLEANDB=true nodemon --exec babel-node ./src/app.js",
-    "seed": "CLEANDB=false babel-node ./src/seed.js && nodemon --exec babel-node ./src/app.js"
+    "seed": "CLEANDB=false babel-node ./src/seed.js && nodemon --exec babel-node --inspect ./src/app.js"
   },
   "husky": {
     "hooks": {
