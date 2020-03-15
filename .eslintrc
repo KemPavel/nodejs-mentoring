@@ -162,7 +162,7 @@
         "no-shadow": 2,
         "no-undef-init": 2,
         "no-undef": 2,
-        "no-unused-vars": 2,
+        "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
         // Node.js
         "callback-return": 2,
         "no-mixed-requires": 2,
