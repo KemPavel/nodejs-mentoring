@@ -1,7 +1,7 @@
 import models from '../models';
-// Нормально ли тянуть модели в сервисы для того что бы использовать transaction?
-// Может есть способ как можно использовать transaction иначе?
 
+// НОРМАЛЬНО ЛИ ТЯНУТЬ МОДЕЛИ В СЕРВИСЫ ДЛЯ ТОГО ЧТО БЫ ИСПОЛЬЗОВАТЬ TRANSACTION?
+// МОЖЕТ ЕСТЬ СПОСОБ КАК МОЖНО ИСПОЛЬЗОВАТЬ TRANSACTION ИНАЧЕ?
 
 export default class UserGroupsService {
   constructor(userGroupsModel, groupModel) {
