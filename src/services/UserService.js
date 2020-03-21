@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import { Op } from 'sequelize';
 
 export default class UserService {
@@ -9,18 +8,14 @@ export default class UserService {
   async createUser({ login, password, age }) {
     const user = {
       login,
-      age
+      age,
+      password
     };
-
-    // Encrypt password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
 
     return this.userModel.create(user);
   }
 
-  findUser(id) {
-    const options = { where: { id } };
+  findUser(options) {
     return this.userModel.findOne(options);
   }
 

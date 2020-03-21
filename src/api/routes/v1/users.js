@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { User, UserGroups, Group } from '../../../models';
 import { validationResult } from 'express-validator';
-import { UserService, UserGroupsService, validators, ErrorHandler } from '../../../services';
+import { UserService, UserGroupsService, Validators, ErrorHandler } from '../../../services';
 
 const router = Router();
+const validators = new Validators();
 const userServiceInstance = new UserService(User);
 const userGroupsServiceInstance = new UserGroupsService(UserGroups, Group);
 
@@ -39,7 +40,7 @@ router.get('/', async (req, res, next) => {
 // @route  POST v1/users
 // @desc   Create a user
 // @access Public
-router.post('/', validators, async (req, res, next) => {
+router.post('/', validators.createUser(), async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -58,7 +59,7 @@ router.post('/', validators, async (req, res, next) => {
 // Put the user to req.user if exists
 router.param('userId', async (req, res, next, userId) => {
   try {
-    const user = await userServiceInstance.findUser(userId);
+    const user = await userServiceInstance.findUser({ where: { id: userId } });
     if (!user) {
       throw new ErrorHandler(404, 'User not found');
     }
@@ -81,7 +82,7 @@ router.get('/:userId', (req, res) => {
 // @route  PUT v1/users/:userId
 // @desc   Update user info
 // @access Private
-router.put('/:userId', validators, async (req, res, next) => {
+router.put('/:userId', validators.updateUser(), async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

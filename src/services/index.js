@@ -1,8 +1,8 @@
 import GroupService from './GroupService';
 import UserService from './UserService';
 import UserGroupsService from './UserGroupsService';
+import Validators from './validators';
 import { notFoundPage, customLogger, handleError, winstonLogger, ErrorHandler } from './ErrorService';
-import validators from './validators';
 
 module.exports = {
   GroupService,
@@ -10,7 +10,7 @@ module.exports = {
   UserGroupsService,
   notFoundPage,
   customLogger,
-  validators,
+  Validators,
   handleError,
   winstonLogger,
   ErrorHandler
