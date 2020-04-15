@@ -5,11 +5,8 @@ import groups from './api/routes/v1/groups';
 import login from './api/routes/v1/login';
 import auth from './middlewares/auth';
 import { notFoundPage, customLogger, handleError, winstonLogger } from './services';
-import models from './models';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const cleanDB = process.env.CLEANDB || false;
 
 // Disable 'x-powered-by' response header
 app.disable('x-powered-by');
@@ -39,6 +36,4 @@ process
     process.exit(1);
   });
 
-models.sequelize.sync({ force: cleanDB }).then(() => {
-  app.listen(PORT, () => winstonLogger.info(`Server is running on port ${PORT}`));
-});
+module.exports = app;

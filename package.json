@@ -6,8 +6,18 @@
   "scripts": {
     "lint": "eslint .",
     "lint_fix": "eslint . --fix",
-    "start": "CLEANDB=true nodemon --exec babel-node ./src/app.js",
-    "seed": "CLEANDB=false babel-node ./src/seed.js && nodemon --exec babel-node --inspect ./src/app.js"
+    "start": "CLEANDB=true nodemon --exec babel-node ./src/server.js",
+    "seed": "CLEANDB=false babel-node ./src/seed.js && nodemon --exec babel-node --inspect ./src/server.js",
+    "test": "jest --testTimeout=10000"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/jest.init.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "husky": {
     "hooks": {
@@ -22,9 +32,12 @@
     "@babel/node": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
     "babel-eslint": "^10.0.3",
+    "babel-polyfill": "^6.26.0",
     "eslint": "^6.7.2",
     "husky": "^4.2.3",
-    "nodemon": "^2.0.1"
+    "jest": "^25.2.7",
+    "nodemon": "^2.0.1",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "config": "^3.2.6",
